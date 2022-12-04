@@ -31,6 +31,13 @@ function isFullyContained(assignment: [Range, Range]): boolean {
 		|| second.from <= first.from && second.to >= first.to
 }
 
+function isOverlapping(assignment: [Range, Range]): boolean {
+	const [first, second] = assignment;
+
+	return first.to >= second.from && first.from <= second.to
+		|| second.to >= first.from && second.from <= first.to
+}
+
 async function phaseOne(): Promise<string | void> {
 	const fullyContainedAssignments = assignments.filter(pair => isFullyContained(pair));
 
@@ -38,7 +45,9 @@ async function phaseOne(): Promise<string | void> {
 }
 
 async function phaseTwo(): Promise<string | void> {
+	const overlappingAssignments = assignments.filter(pair => isOverlapping(pair));
 
+	return overlappingAssignments.length.toString();
 }
 
 export default {
