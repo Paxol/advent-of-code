@@ -60,30 +60,54 @@ async function parseInput(input: string): Promise<void> {
 }
 
 async function phaseOne(): Promise<string | void> {
+	const myStack = JSON.parse(JSON.stringify(stacks)) as string[][];
+	
 	for (let i = 0; i < moves.length; i++) {
 		const move = moves[i];
 
 		const taken: string[] = [];
 		for (let j = 0; j < move.take; j++) {
-			taken.push(stacks[move.from].pop()!);
+			taken.push(myStack[move.from].pop()!);
 		}
 
 		for (let j = 0; j < taken.length; j++) {
 			const crate = taken[j];
-			stacks[move.to].push(crate);
+			myStack[move.to].push(crate);
 		}
 	}
 
 	let top = "";
-	for (let j = 0; j < stacks.length; j++) {
-		top += stacks[j].at(-1);
+	for (let j = 0; j < myStack.length; j++) {
+		top += myStack[j].at(-1);
 	}
 
 	return top;
 }
 
 async function phaseTwo(): Promise<string | void> {
+	const myStack = JSON.parse(JSON.stringify(stacks)) as string[][];
 
+	for (let i = 0; i < moves.length; i++) {
+		const move = moves[i];
+
+		const taken: string[] = [];
+		for (let j = 0; j < move.take; j++) {
+			taken.push(myStack[move.from].pop()!);
+		}
+
+		taken.reverse();
+		for (let j = 0; j < taken.length; j++) {
+			const crate = taken[j];
+			myStack[move.to].push(crate);
+		}
+	}
+
+	let top = "";
+	for (let j = 0; j < myStack.length; j++) {
+		top += myStack[j].at(-1);
+	}
+
+	return top;
 }
 
 export default {
